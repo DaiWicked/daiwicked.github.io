@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="global-animations.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组织音乐库</title>
+    <style>
+        /* 全局样式：自定义背景+毛玻璃基础 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "Arial", sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('music-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(0px);
+            position: relative;
+        }
+        /* 毛玻璃遮罩层：全屏半透明模糊 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 114, 198, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 0;
+        }
+        /* 页面容器：脱离遮罩层 */
+        .page-container {
+            position: relative;
+            z-index: 1;
+            padding: 50px 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* 页面标题：毛玻璃效果 */
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px #000;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            padding: 15px 30px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        /* 播放器容器：强化毛玻璃 */
+        .music-player {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* 播放列表标题 */
+        .playlist-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+            color: #fff;
+        }
+        /* 歌曲列表：毛玻璃项 */
+        .song-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        .song-item {
+            padding: 12px 20px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .song-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        /* 真实频谱容器 */
+        .audio-spectrum {
+            width: 100%;
+            height: 100px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 10px 0;
+            position: relative;
+        }
+        /* 频谱柱样式 */
+        .spectrum-bar {
+            width: 5px;
+            height: 10px;
+            background: linear-gradient(to top, #0072C6, #ffffff);
+            border-radius: 3px;
+            transition: height 0.05s ease;
+        }
+        /* HTML5播放器样式：适配毛玻璃 */
+        audio {
+            width: 100%;
+            outline: none;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .music-player {
+                width: 100%;
+                padding: 20px;
+            }
+            .page-title {
+                font-size: 24px;
+                padding: 10px 20px;
+            }
+            body::before {
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+            }
+            .audio-spectrum {
+                height: 80px;
+            }
+            .spectrum-bar {
+                width: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <h1 class="page-title">音乐库</h1>
+        <div class="music-player">
+            <h2 class="playlist-title">歌曲列表</h2>
+            <ul class="song-list" id="songList">
+                <!-- 歌曲列表由JS自动生成 -->
+            </ul>
+            <!-- 真实频谱容器 -->
+            <div class="audio-spectrum" id="audioSpectrum"></div>
+            <!-- HTML5音乐播放器 -->
+            <audio id="audioPlayer" controls autoplay crossorigin="anonymous">
+                您的浏览器不支持HTML5音频播放，请升级浏览器！
+            
+        </div>
+    </div>
+
+    <script>
+        // 配置：6首歌曲的文件名（按“作者，歌曲名”格式，无需后缀）
+        const songs = [
+            "Letting go - 未知歌手",
+            "The Theme From San Andreas - Michael Hunter",
+            "幻昼(DJ版) - PureTwilight",
+            "Move Up - Qism Rhex",
+            "SEMPERO (Slowed) - QMIIR",
+            "小屿的视频配乐1 - 小屿",
+            "I realy want to stay your house - Rosa Walton",
+            "I watch the moon（氛围版） - 一颗小桃子",
+            "Good person - 未知",
+            "天亮以前说再见 - 情仁杰",
+            "心做 - 小雾神",
+            "起风了二创抖音版",
+            "我和你的故事响亮登场",
+            "Charlie Puth - See You Again (Piano Demo Version)",
+            "遗憾皆在回忆中 - 爱人错过 (0.9x)",
+            "The Chainsmokers - Something Just Like 烟袋斜街",
+            "Alan Walker - All Falls Down (10秒慢速版片段)",
+            "yetep、Tritonal、Phoebe Ryan - Now Or Never (Yetep Remix)",
+            "米津玄師 - Lemon",
+            "Mouki、Loooech、The Kid LAROI - Stay",
+            "Moliy、Silent Addy - Shake It To The Max",
+            "DJ铁柱 - Dạ Vũ (DJ版)",
+            "CHEN、Olly Murs - That Girl (DJ CHEN版)",
+            "全弟 - 电音之力 (DJ版)",
+            "音质推荐 - I Stay Up All Night (Remix)",
+            "BGM收集官(背景音乐) - Cradles",
+            "Rauf & Faik - колыбельная"
+        ];
+
+        // DOM元素
+        const songList = document.getElementById('songList');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const spectrumContainer = document.getElementById('audioSpectrum');
+        const barCount = 40; // 频谱柱数量，越多越细腻
+        let spectrumBars = [];
+        let audioContext, analyser, dataArray;
+
+        // 1. 创建频谱柱
+        for (let i = 0; i < barCount; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'spectrum-bar';
+            spectrumContainer.appendChild(bar);
+            spectrumBars.push(bar);
+        }
+
+        // 2. 初始化Web Audio API
+        function initAudioAPI() {
+            // 解决浏览器音频自动播放限制
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 128; // 控制频谱精度，值越大越精准
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                // 连接音频源到分析器
+                const source = audioContext.createMediaElementSource(audioPlayer);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+            } catch (e) {
+                console.log("浏览器不支持Web Audio API，降级为随机频谱");
+                fallbackToRandomSpectrum();
+            }
+        }
+
+        // 3. 真实频谱动画
+        function drawRealSpectrum() {
+            if (!analyser) return;
+            requestAnimationFrame(drawRealSpectrum);
+            analyser.getByteFrequencyData(dataArray);
+            
+            // 分配频谱数据到频谱柱
+            const sliceWidth = Math.floor(dataArray.length / barCount);
+            for (let i = 0; i < barCount; i++) {
+                let value = 0;
+                const offset = i * sliceWidth;
+                // 取区间内的平均值，让频谱更平稳
+                for (let j = 0; j < sliceWidth; j++) {
+                    value += dataArray[offset + j];
+                }
+                value = value / sliceWidth;
+                // 映射数值到高度（0-90px）
+                const barHeight = Math.max(value / 255 * 90, 5);
+                spectrumBars[i].style.height = `${barHeight}px`;
+            }
+        }
+
+        // 4. 降级方案：随机频谱（兼容旧浏览器）
+        function fallbackToRandomSpectrum() {
+            function animate() {
+                spectrumBars.forEach(bar => {
+                    const h = Math.random() * 80 + 5;
+                    bar.style.height = `${h}px`;
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // 5. 生成歌曲列表
+        songs.forEach(song => {
+            const li = document.createElement('li');
+            li.className = 'song-item';
+            li.textContent = song;
+            li.addEventListener('click', () => {
+                const songPath = `./music/${song}.mp3`;
+                audioPlayer.src = songPath;
+                audioPlayer.play().then(() => {
+                    // 播放时启动音频分析
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+                    drawRealSpectrum();
+                });
+            });
+            songList.appendChild(li);
+        });
+
+        // 6. 页面交互事件
+        // 首次点击页面初始化音频（解决自动播放限制）
+        document.addEventListener('click', () => {
+            if (!audioContext) initAudioAPI();
+        }, { once: true });
+
+        // 默认播放第一首歌
+        if (songs.length > 0) {
+            audioPlayer.src = `./music/${songs[0]}.mp3`;
+            audioPlayer.addEventListener('play', () => {
+                if (audioContext) {
+                    if (audioContext.state === 'suspended') audioContext.resume();
+                    drawRealSpectrum();
+                }
+            });
+        }
+
+        // 暂停时重置频谱
+        audioPlayer.addEventListener('pause', () => {
+            spectrumBars.forEach(bar => {
+                bar.style.height = '5px';
+            });
+        });
+    </script>
+</body>
+
+<div style="text-align: center">
+    <!-- 蓝色灵动返回按钮 -->
+    <a href="./index.html" target="_blank" 
+       style="
+           display: inline-block;
+           padding: 14px 32px;
+           background: linear-gradient(135deg, #3b82f6, #2563eb); /* 蓝色渐变 */
+           color: white;
+           font-size: 18px;
+           font-weight: 600;
+           border-radius: 12px;
+           text-decoration: none;
+           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* 蓝色阴影 */
+           transition: all 0.3s ease;
+           position: relative;
+       "
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'">
+        <i class="fa fa-music mr-2"></i>返回主界面
+    </a>
+</div>
+
+</html>

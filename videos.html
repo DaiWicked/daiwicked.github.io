@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="global-animations.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放平台</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 背景与主体容器 */
+        body {
+            /* 自定义背景图 - 替换为你的图片路径，建议放在 /var/www/html/images 目录 */
+            background: url("./images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            /* 渐变遮罩 + 玻璃模糊底层 */
+            position: relative;
+            min-height: 100vh;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 炫酷蓝紫渐变色遮罩，可自行调整色值 */
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.7), rgba(156, 39, 176, 0.7));
+            z-index: -1;
+        }
+
+        /* 顶部导航栏 - 玻璃模糊效果 */
+        .header {
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* 主体布局 - 左侧分类 + 右侧视频区 */
+        .main-container {
+            display: flex;
+            width: 95%;
+            margin: 20px auto;
+            gap: 20px;
+            padding-bottom: 80px; /* 给底部按钮留空间 */
+        }
+
+        /* 左侧分类导航 - 玻璃模糊 + 渐变色边框 */
+        .category-sidebar {
+            width: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+        .category-item {
+            padding: 15px 25px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .category-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid #ff4081;
+        }
+        .category-item.active {
+            background: rgba(255, 255, 255, 0.25);
+            border-left: 3px solid #ff4081;
+            font-weight: bold;
+        }
+
+        /* 右侧视频内容区 */
+        .video-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .video-section {
+            margin-bottom: 30px;
+        }
+        .video-section h2 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #4caf50;
+        }
+        /* 视频网格 - 一行6个，响应式适配 */
+        .video-grid {
+            display: grid;
+            /* 一行6列，间距15px */
+            grid-template-columns: repeat(auto-fill, minmax(calc(100%/6 - 15px), 1fr));
+            gap: 15px;
+        }
+        /* 视频卡片 - 玻璃模糊 + 悬浮动效 */
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .video-thumb {
+            width: 100%;
+            height: 160px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .video-card:hover .video-thumb img {
+            transform: scale(1.05);
+        }
+        .video-title {
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 底部返回按钮 */
+        .footer {
+            width: 100%;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        .back-btn {
+            padding: 10px 30px;
+            background: linear-gradient(90deg, #ff4081, #673ab7);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        /* 响应式适配 - 手机/平板 */
+        @media (max-width: 1200px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(calc(100%/4 - 15px), 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .category-sidebar {
+                width: 100%;
+                position: static;
+            }
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(calc(100%/2 - 15px), 1fr));
+            }
+        }
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="header">
+        <h1>视频播放平台</h1>
+    </div>
+
+    <!-- 主体内容 -->
+    <div class="main-container">
+        <!-- 左侧分类导航 -->
+        <div class="category-sidebar">
+            <div class="category-item active" onclick="scrollToSection('DomesticDrama')">国产剧情</div>
+            <div class="category-item" onclick="scrollToSection('ZhengzhengDistrict')">科比专区</div>
+            <div class="category-item" onclick="scrollToSection('EuropeanAndAmericanRegions')">欧美区</div>
+            <div class="category-item" onclick="scrollToSection('DeltaOperationAnimation')">三角洲动画</div>
+        </div>
+
+        <!-- 视频内容 -->
+        <div class="video-content">
+            <!-- 娱乐区视频 -->
+            <div class="video-section" id="DomesticDrama">
+                <h2>国产剧情</h2>
+                <div class="video-grid">
+                    <!-- 视频卡片示例 - 已添加跳转参数 -->
+                    <div class="video-card" onclick="window.location.href='play.html?video=ent1.mp4&title=艳遇搭讪漂亮人妻'">
+                        <div class="video-thumb"><img src="./images/ent_thumb.jpg" alt="艳遇搭讪漂亮人妻"></div>
+                        <div class="video-title">艳遇搭讪漂亮人妻</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ent2.mp4&title=痴女学员饥渴求欢'">
+                        <div class="video-thumb"><img src="./images/ent_thumb.jpg" alt="痴女学员饥渴求欢"></div>
+                        <div class="video-title">痴女学员饥渴求欢</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ent3.mp4&title=黑人干爆亚洲骚女'">
+                        <div class="video-thumb"><img src="./images/ent_thumb.jpg" alt="黑人干爆亚洲骚女"></div>
+                        <div class="video-title">黑人干爆亚洲骚女</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-section" id="ZhengzhengDistrict">
+                <h2>科比专区</h2>
+                <div class="video-grid">
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict1.mp4&title=科比制裁嘴毒亲戚'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="科比制裁嘴毒亲戚"></div>
+                        <div class="video-title">科比制裁嘴毒亲戚</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict2.mp4&title=科比与中国式教育'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="科比与中国式教育"></div>
+                        <div class="video-title">科比与中国式教育</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict3.mp4&title=科比与工作'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="科比与工作"></div>
+                        <div class="video-title">科比与工作</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict4.mp4&title=科比模仿中国智障短剧'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="科比模仿中国智障短剧"></div>
+                        <div class="video-title">科比模仿中国智障短剧</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict5.mp4&title=科比制裁猪妞'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="科比制裁猪妞"></div>
+                        <div class="video-title">科比制裁猪妞</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict6.mp4&title=奔跑吧老大最终篇'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="奔跑吧老大最终篇"></div>
+                        <div class="video-title">奔跑吧老大最终篇</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict7.mp4&title=奔跑吧老大'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="奔跑吧老大"></div>
+                        <div class="video-title">奔跑吧老大</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict8.mp4&title=科比的超能力'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="科比的超能力"></div>
+                        <div class="video-title">科比的超能力</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=ZhengzhengDistrict9.mp4&title=小丑科比'">
+                        <div class="video-thumb"><img src="./images/ZhengzhengDistrict_thumb.jpg" alt="小丑科比"></div>
+                        <div class="video-title">小丑科比</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-section" id="EuropeanAndAmericanRegions">
+                <h2>欧美区</h2>
+                <div class="video-grid">
+                    <div class="video-card" onclick="window.location.href='play.html?video=EuropeanAndAmericanRegions1.mp4&title=憨豆特工2'">
+                        <div class="video-thumb"><img src="./images/EuropeanAndAmericanRegions_thumb.jpg" alt="憨豆特工2"></div>
+                        <div class="video-title">憨豆特工2</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=EuropeanAndAmericanRegions2.mp4&title=憨豆特工3'">
+                        <div class="video-thumb"><img src="./images/EuropeanAndAmericanRegions_thumb.jpg" alt="憨豆特工3"></div>
+                        <div class="video-title">憨豆特工3</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-section" id="DeltaOperationAnimation">
+                <h2>三角洲动画</h2>
+                <div class="video-grid">
+                    <div class="video-card" onclick="window.location.href='play.html?video=DeltaOperationAnimation1.mp4&title=无法实现的愿望'">
+                        <div class="video-thumb"><img src="./images/DeltaOperationAnimation_thumb.jpg" alt="无法实现的愿望"></div>
+                        <div class="video-title">无法实现的愿望</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=DeltaOperationAnimation2.mp4&title=麦小鼠和哈基娜'">
+                        <div class="video-thumb"><img src="./images/DeltaOperationAnimation_thumb.jpg" alt="麦小鼠和哈基娜"></div>
+                        <div class="video-title">麦小鼠和哈基娜</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=DeltaOperationAnimation3.mp4&title=关注麦小鼠哦'">
+                        <div class="video-thumb"><img src="./images/DeltaOperationAnimation_thumb.jpg" alt="关注麦小鼠哦"></div>
+                        <div class="video-title">关注麦小鼠哦</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=DeltaOperationAnimation4.mp4&title=麦小鼠猛攻航天'">
+                        <div class="video-thumb"><img src="./images/DeltaOperationAnimation_thumb.jpg" alt="麦小鼠猛攻航天"></div>
+                        <div class="video-title">麦小鼠猛攻航天</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=DeltaOperationAnimation5.mp4&title=给大家看点阳的'">
+                        <div class="video-thumb"><img src="./images/DeltaOperationAnimation_thumb.jpg" alt="给大家看点阳的"></div>
+                        <div class="video-title">给大家看点阳的</div>
+                    </div>
+                    <div class="video-card" onclick="window.location.href='play.html?video=DeltaOperationAnimation6.mp4&title=难道他真的是唐王大人'">
+                        <div class="video-thumb"><img src="./images/DeltaOperationAnimation_thumb.jpg" alt="难道他真的是唐王大人"></div>
+                        <div class="video-title">难道他真的是唐王大人</div>
+                    </div>
+                </div>
+         </div>
+    </div>
+
+    <!-- 底部返回按钮 -->
+    <div class="footer">
+        <button class="back-btn" onclick="window.location.href='./index.html'">返回主界面</button>
+    </div>
+
+    <script>
+        // 点击分类跳转到对应视频区
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
+            // 切换分类激活状态
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
