@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="global-animations.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>缺德组织官网</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // ========== 可修改项 ==========
+                        // 修改作用：调整网站主色调（匹配logo颜色）
+                        // 修改格式：16进制颜色码（#RRGGBB），例如#2196F3（亮蓝）、#00796B（青绿）
+                        primary: '#1E88E5', // 网站主色调（logo蓝色）
+                        secondary: '#F5F7FA', // 背景浅灰色（建议不修改）
+                        dark: '#263238', // 文字深色（建议不修改）
+                        live: '#FF5252', // 直播标识红色（建议不修改）
+                        music: '#673AB7' // 音乐播放器紫色调
+                    },
+                    fontFamily: {
+                        // ========== 可修改项 ==========
+                        // 修改作用：调整网站全局字体
+                        // 修改格式：字体名称数组，需确保字体可访问，例如['微软雅黑', 'Microsoft YaHei', 'sans-serif']
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            }
+            .hover-lift {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            }
+            .video-container {
+                position: relative;
+                padding-bottom: 56.25%; /* 16:9 视频比例，建议不修改 */
+                height: 0;
+                overflow: hidden;
+            }
+            .video-container iframe,
+            .video-container video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0.5rem;
+            }
+            .live-badge {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                z-index: 10;
+                animation: pulse 2s infinite; /* 直播标识脉冲动画，建议不修改 */
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            /* 音乐播放器样式 */
+            .music-player {
+                background: linear-gradient(135deg, #673AB7 0%, #512DA8 100%);
+                border-radius: 1rem;
+                box-shadow: 0 10px 30px rgba(103, 58, 183, 0.3);
+            }
+            .progress-bar {
+                height: 6px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            .progress-fill {
+                height: 100%;
+                background: white;
+                border-radius: 3px;
+                transition: width 0.1s linear;
+            }
+            .lyrics-container {
+                height: 120px;
+                overflow: hidden;
+                position: relative;
+            }
+            .lyrics-line {
+                transition: transform 0.5s ease;
+                text-align: center;
+                position: absolute;
+                width: 100%;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .lyrics-active {
+                font-size: 1.25rem;
+                font-weight: bold;
+                color: white;
+            }
+            .lyrics-inactive {
+                color: rgba(255,255,255,0.6);
+            }
+        }
+    </style>
+</head>
+<body class="bg-secondary text-dark font-sans">
+    <!-- 板块1：Logo名称 -->
+    <section class="py-20 bg-primary/10">
+        <div class="container mx-auto px-6 text-center">
+            <div class="inline-block p-4 bg-white rounded-lg shadow-lg hover-lift">
+                <!-- ========== 可修改项 ==========
+                修改作用：替换组织Logo图片
+                修改格式：
+                1. 将你的logo图片命名为logo.png放在网站根目录，或
+                2. 修改src为图片完整URL，例如src="https://xxx.com/your-logo.png"
+                宽度w-40可修改：w-20（小）、w-48（大）、w-64（超大）
+                -->
+                <img src="logo.png" alt="缺德组织Logo" class="w-15 h-auto mx-auto mb-4">
+                
+                <!-- ========== 可修改项 ==========
+                修改作用：修改组织名称
+                修改格式：直接替换文字内容，例如"科技先锋组织"
+                字号可修改：text-3xl（小）、text-5xl（默认）、text-6xl（大）
+                -->
+                <h1 class="text-4xl md:text-6xl font-bold text-primary text-shadow">缺德组织</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主页面核心区跳转按钮 - 样式适配缺德组织风格 -->
+<div style="text-align: center; margin: 30px 0;">
+    <a href="/index2.html" style="display: inline-block; padding: 12px 30px; background-color: #1E88E5; color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+        进入组织作品展示
+    </a>
+</div>
+
+    <!-- 板块2：组织宣传视频（双区域并列） -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <!-- ========== 可修改项 ==========
+                修改作用：修改板块标题
+                修改格式：直接替换文字内容，例如"组织介绍视频"
+                -->
+                <h2 class="text-3xl font-bold mb-8 text-primary text-center">宣传视频</h2>
+                <!-- 双视频网格布局 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 宣传视频1 -->
+                    <div class="bg-secondary p-4 rounded-lg shadow-md hover-lift">
+                        <div class="video-container">
+                            <!-- ========== 可修改项 ==========
+                            修改作用：替换组织宣传视频1
+                            修改格式（本地视频）：
+                            1. poster：视频封面图路径，例如"video1-cover.jpg"
+                            2. src：视频文件路径，支持MP4格式，例如"your-video1.mp4"
+                            修改格式（外链视频）：
+                            注释掉video标签，取消iframe注释，替换src为B站/YouTube嵌入链接
+                            示例：src="https://player.bilibili.com/player.html?bvid=BV1xx411c7mZ&page=1"
+                            -->
+                            <video controls poster="video1-cover.jpg" class="w-full">
+                                <source src="organization-video1.mp4" type="video/mp4">
+                                您的浏览器不支持HTML5视频播放，请升级浏览器。
+                            </video>
+                        </div>
+                        <!-- ========== 可修改项 ==========
+                        修改作用：修改视频1描述文字
+                        修改格式：直接替换文字内容，例如"缺德组织2026年度总结视频"
+                        -->
+                        <p class="mt-4 text-center text-gray-600">影视开头</p>
+                    </div>
+                    <!-- 宣传视频2 -->
+                    <div class="bg-secondary p-4 rounded-lg shadow-md hover-lift">
+                        <div class="video-container">
+                            <!-- ========== 可修改项 ==========
+                            修改作用：替换组织宣传视频2
+                            修改格式（本地视频）：
+                            1. poster：视频封面图路径，例如"video2-cover.jpg"
+                            2. src：视频文件路径，支持MP4格式，例如"your-video2.mp4"
+                            修改格式（外链视频）：
+                            注释掉video标签，取消iframe注释，替换src为B站/YouTube嵌入链接
+                            示例：src="https://player.bilibili.com/player.html?bvid=BV1xx411c7mZ&page=2"
+                            -->
+                            <video controls poster="video2-cover.jpg" class="w-full">
+                                <source src="organization-video2.mp4" type="video/mp4">
+                                您的浏览器不支持HTML5视频播放，请升级浏览器。
+                            </video>
+                        </div>
+                        <!-- ========== 可修改项 ==========
+                        修改作用：修改视频2描述文字
+                        修改格式：直接替换文字内容，例如"缺德组织成员风采展示"
+                        -->
+                        <p class="mt-4 text-center text-gray-600">组织代言人：石原里美</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 直播视频展示区（三个直播界面 + 节目表） -->
+    <section class="py-16 bg-primary/5">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <!-- ========== 可修改项 ==========
+                修改作用：修改直播专区标题
+                修改格式：直接替换文字内容，例如"技术直播大厅"
+                -->
+                <h2 class="text-3xl font-bold mb-8 text-primary text-center">
+                    <i class="fa fa-video-camera mr-2"></i>直播专区
+                </h2>
+
+                <!-- 节目表展示区域 -->
+                <div class="mb-12 bg-white p-6 rounded-lg shadow-md hover-lift">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改节目表标题
+                    修改格式：直接替换文字内容，例如"2026年1月直播排期"
+                    -->
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <i class="fa fa-calendar-check-o text-primary mr-2"></i>本赛季广告
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <!-- ========== 可修改项 ==========
+                        修改作用：替换节目表图片
+                        修改格式：
+                        1. 将节目表图片命名为live-schedule.jpg放在网站根目录，或
+                        2. 修改src为图片完整URL，例如src="https://xxx.com/schedule.png"
+                        -->
+                        <img src="live-schedule.jpg" alt="广告投放区" class="w-full max-w-3xl mx-auto rounded-lg shadow-sm">
+                    </div>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改节目表描述文字
+                    修改格式：直接替换文字内容，例如"点击图片查看高清版2026年1月直播排期"
+                    -->
+                    <p class="mt-4 text-gray-600 text-center">本网站支持广告投放</p>
+                </div>
+
+                <!-- 三个直播界面（全部为直播中状态） -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 直播界面1 -->
+                    <div class="bg-white rounded-lg shadow-md hover-lift overflow-hidden">
+                        <div class="relative">
+                            <span class="live-badge bg-live text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                <i class="fa fa-circle mr-1"></i>直播中
+                            </span>
+                            <div class="video-container">
+                                <!-- ========== 可修改项 ==========
+                                修改作用：替换直播1的播放源
+                                修改格式（直播流）：
+                                1. poster：直播封面图路径，例如"live1-cover.jpg"
+                                2. src：直播流地址，支持HLS格式（.m3u8），例如"https://your-stream.com/live1.m3u8"
+                                修改格式（第三方直播）：
+                                注释掉video标签，取消iframe注释，替换src为直播平台嵌入链接
+                                示例：src="https://live.bilibili.com/123456"
+                                -->
+                                <video controls poster="live1-cover.jpg" class="w-full">
+                                    <source src="https://live.douyin.com/339638082961" type="application/x-mpegURL">
+                                    您的浏览器不支持直播播放
+                                </video>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <!-- ========== 可修改项 ==========
+                            修改作用：修改直播1标题
+                            修改格式：直接替换文字内容，例如"【零基础】Nginx入门到精通"
+                            -->
+                            <h3 class="text-xl font-semibold mb-2">央视新闻</h3>
+                            <!-- ========== 可修改项 ==========
+                            修改作用：修改直播1信息
+                            修改格式：直接替换文字内容，例如"主播：技术组 | 在线人数：200+"
+                            -->
+                            <p class="text-gray-600 mb-3">来源：抖音直播</p>
+                            <!-- ========== 可修改项 ==========
+                            修改作用：修改直播1跳转链接
+                            修改格式：替换href为实际直播间地址，例如href="https://live.xxx.com/room1"
+                            按钮文字可修改：例如"<i class="fa fa-external-link mr-1"></i>观看直播"
+                            -->
+                            <a href="https://live.douyin.com/339638082961" target="_blank" class="inline-block px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fa fa-external-link mr-1"></i>进入直播间
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 新增：必应搜索板块 -->
+    <section class="py-16 bg-primary/5">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <!-- ========== 可修改项 ==========
+                修改作用：修改搜索板块标题
+                修改格式：直接替换文字内容，例如"全网资源搜索中心"
+                -->
+                <h2 class="text-3xl font-bold mb-8 text-primary text-center">
+                    <i class="fa fa-search mr-2"></i>搜索中心
+                </h2>
+                
+                <div class="bg-white p-8 rounded-lg shadow-md hover-lift">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：调整必应搜索的配置
+                    修改说明：
+                    1. action：必应搜索接口地址（建议不修改）
+                    2. q：搜索关键词参数（建议不修改）
+                    3. form target：_blank表示新窗口打开（可改为_self在当前窗口打开）
+                    -->
+                    <form action="https://cn.bing.com/search" method="get" target="_blank" class="flex flex-col md:flex-row gap-4">
+                        <input type="text" 
+                               name="q" 
+                               placeholder="输入你想搜索的内容..." 
+                               class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg">
+                        <button type="submit" 
+                                class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors hover-lift text-lg flex items-center justify-center">
+                            <i class="fa fa-search mr-2"></i>搜索
+                        </button>
+                    </form>
+                    
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改搜索提示文字
+                    修改格式：直接替换文字内容，例如"支持技术文档、开源资源、教程等内容搜索"
+                    -->
+                    <p class="mt-4 text-center text-gray-600">
+                        <i class="fa fa-info-circle mr-1"></i>使用必应搜索引擎，点击搜索将跳转到必应结果页面
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块3：组织简介 -->
+    <section class="py-16 container mx-auto px-6">
+        <div class="max-w-3xl mx-auto">
+            <!-- ========== 可修改项 ==========
+            修改作用：修改组织简介标题
+            修改格式：直接替换文字内容，例如"关于我们"
+            -->
+            <h2 class="text-3xl font-bold mb-8 text-primary text-center">关于我们</h2>
+            <div class="bg-white p-8 rounded-lg shadow-md hover-lift">
+                <!-- ========== 可修改项 ==========
+                修改作用：修改组织简介第一段文字
+                修改格式：直接替换文字内容，可保留换行符<br>或段落结构
+                -->
+                <p class="text-lg leading-relaxed mb-4">
+                    缺德组织成立于2023年的一个夏季运动会，在这里我们遇到了志同道合的人，一起创办了这个组织，虽然组织人数很少，但这是一个很有意义的里程碑，“人类的一小步，文明的一大步”，我们坚信，我们的存在将会改变世界！
+                </p>
+                <div class="my-6">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：替换组织简介图片
+                    修改格式：
+                    1. 将图片命名为placeholder-intro.jpg放在网站根目录，或
+                    2. 修改src为图片完整URL，例如src="https://xxx.com/intro.jpg"
+                    高度h-64可修改：h-48（小）、h-80（大）
+                    -->
+                    <img src="placeholder-intro.jpg" alt="组织场景" class="w-full h-64 object-cover rounded-lg shadow-sm">
+                </div>
+                <!-- ========== 可修改项 ==========
+                修改作用：修改组织简介第二段文字
+                修改格式：直接替换文字内容，可添加/删除列表项
+                -->
+                <p class="text-lg leading-relaxed">
+                    我们的价值观：<br>
+                    1. 自由分享：所有技术资源免费共享，拒绝技术壁垒<br>
+                    2. 互助成长：新手提问有回应，老手分享有收获<br>
+                    3. 持续创新：保持对新技术的探索和尝试<br>
+                    4. 专业做缺德事：没有什么可以说的，我们尊重你的想法<br>
+                    5. 发挥你的专长：你最擅长的东西，我们支持<br>
+                    6. 做你喜欢做的事：做你喜欢做的事，这很难吗<br>
+                    7. 撸管撸管撸撸撸，美女美女嫖嫖嫖，睡了一遍又一遍<br>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块4：人员介绍 -->
+    <section class="py-16 bg-primary/5">
+        <div class="container mx-auto px-6">
+            <!-- ========== 可修改项 ==========
+            修改作用：修改人员介绍标题
+            修改格式：直接替换文字内容，例如"核心团队成员"
+            -->
+            <h2 class="text-3xl font-bold mb-12 text-primary text-center">成员列表</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 成员1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover-lift text-center">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：替换成员1头像
+                    修改格式：
+                    1. 将头像命名为member1.jpg放在网站根目录，或
+                    2. 修改src为图片完整URL，例如src="https://xxx.com/zhangsan.jpg"
+                    尺寸w-32 h-32可修改：w-24（小）、w-40（大）
+                    -->
+                    <img src="member1.jpg" alt="戴总" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-primary/20">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员1姓名
+                    修改格式：直接替换文字内容，例如"张某某"
+                    -->
+                    <h3 class="text-xl font-semibold mb-2">WickedDai</h3>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员1职位
+                    修改格式：直接替换文字内容，例如"首席技术官 / Python架构师"
+                    -->
+                    <p class="text-primary/80">创始人/程序员/摄影师</p>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员1简介
+                    修改格式：直接替换文字内容，例如"15年开发经验，主导多个开源项目"
+                    -->
+                    <p class="mt-2 text-sm text-gray-600">缺德组织CEO，擅长捉奸，缺德组织核心人员之一</p>
+                </div>
+                <!-- 成员2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover-lift text-center">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：替换成员2头像
+                    修改格式：
+                    1. 将头像命名为member2.jpg放在网站根目录，或
+                    2. 修改src为图片完整URL，例如src="https://xxx.com/lisi.jpg"
+                    -->
+                    <img src="member2.jpg" alt="黄总" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-primary/20">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员2姓名
+                    修改格式：直接替换文字内容，例如"李某某"
+                    -->
+                    <h3 class="text-xl font-semibold mb-2">JacksonHuang</h3>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员2职位
+                    修改格式：直接替换文字内容，例如"运维总监 / 云原生专家"
+                    -->
+                    <p class="text-primary/80">电脑专家/网络工程师/徕卡摄影</p>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员2简介
+                    修改格式：直接替换文字内容，例如"8年运维经验，精通K8s/容器化"
+                    -->
+                    <p class="mt-2 text-sm text-gray-600">缺德组织电脑专家，组织国际业务对接负责人，佳能徕卡相机拥有者</p>
+                </div>
+                <!-- 成员3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover-lift text-center">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：替换成员3头像
+                    修改格式：
+                    1. 将头像命名为member3.jpg放在网站根目录，或
+                    2. 修改src为图片完整URL，例如src="https://xxx.com/wangwu.jpg"
+                    -->
+                    <img src="member3.jpg" alt="林总" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-primary/20">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员3姓名
+                    修改格式：直接替换文字内容，例如"王某某"
+                    -->
+                    <h3 class="text-xl font-semibold mb-2">Mr.Lin</h3>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员3职位
+                    修改格式：直接替换文字内容，例如"前端架构师 / UI设计总监"
+                    -->
+                    <p class="text-primary/80">认证摄影师</p>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员3简介
+                    修改格式：直接替换文字内容，例如"6年前端经验，主导多个大型项目UI设计"
+                    -->
+                    <p class="mt-2 text-sm text-gray-600">佳能相机拥有者，漫展约拍负责人，缺德组织里重要一员</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-lift text-center">
+                    <img src="member5.jpg" alt="傻逼" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-primary/20">
+                    <a href="other.html" class="text-xl font-semibold mb-2">黄寄吧</a>
+                    <p class="text-primary/80">骚福瑞</p>
+                    <p class="mt-2 text-sm text-gray-600">吃喝嫖赌样样精通，世界撸管记录保持者</p>
+                </div>
+                <!-- 成员4 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover-lift text-center">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：替换成员4头像
+                    修改格式：
+                    1. 将头像命名为member4.jpg放在网站根目录，或
+                    2. 修改src为图片完整URL，例如src="https://xxx.com/zhaoliu.jpg"
+                    -->
+                    <img src="member4.jpg" alt="You" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-primary/20">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员4姓名
+                    修改格式：直接替换文字内容，例如"赵某某"
+                    -->
+                    <h3 class="text-xl font-semibold mb-2">屏幕前的你</h3>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员4职位
+                    修改格式：直接替换文字内容，例如"社区运营总监 / 技术文档工程师"
+                    -->
+                    <p class="text-primary/80">不限身份，是个正常人</p>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改成员4简介
+                    修改格式：直接替换文字内容，例如"5年技术写作经验，出版多本技术书籍"
+                    -->
+                    <p class="mt-2 text-sm text-gray-600">想追求性福？赶快加入我们吧！</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块5：合作伙伴+资源库 -->
+    <section class="py-16 container mx-auto px-6">
+        <div class="max-w-4xl mx-auto">
+            <!-- ========== 可修改项 ==========
+            修改作用：修改合作与资源标题
+            修改格式：直接替换文字内容，例如"合作机构与资源中心"
+            -->
+            <h2 class="text-3xl font-bold mb-8 text-primary text-center">链接与资源</h2>
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <div class="mb-10">
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改合作伙伴标题
+                    修改格式：直接替换文字内容，例如"战略合作伙伴"
+                    -->
+                    <h3 class="text-2xl font-semibold mb-6">推荐链接</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <!-- 合作伙伴1 -->
+                        <!-- ========== 可修改项 ==========
+                        修改作用：修改合作伙伴1链接和文字
+                        修改格式：
+                        1. href：替换为合作伙伴官网地址，例如href="https://www.xxx.com"
+                        2. 文字：替换为合作伙伴名称，例如"<i class="fa fa-github mr-2"></i>开源中国"
+                        -->
+                        <a href="https://github.com" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
+                            <i class="fa fa-github mr-2"></i>GitHub开源社区
+                        </a>
+                        <!-- 合作伙伴2 -->
+                        <!-- ========== 可修改项 ==========
+                        修改作用：修改合作伙伴2链接和文字
+                        修改格式：
+                        1. href：替换为合作伙伴官网地址，例如href="https://www.xxx.com"
+                        2. 文字：替换为合作伙伴名称，例如"<i class="fa fa-link mr-2"></i>阿里云开发者社区"
+                        -->
+                        <a href="https://dev.shinnku.us" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
+                            <i class="fa fa-link mr-2"></i>真红小站（galgame）
+                        </a>
+                        <!-- 合作伙伴3 -->
+                        <!-- ========== 可修改项 ==========
+                        修改作用：修改合作伙伴3链接和文字
+                        修改格式：
+                        1. href：替换为合作伙伴官网地址，例如href="https://www.xxx.com"
+                        2. 文字：替换为合作伙伴名称，例如"<i class="fa fa-cubes mr-2"></i>腾讯云开发者平台"
+                        -->
+                        <a href="https://yandex.com" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
+                            <i class="fa fa-cubes mr-2"></i>Yandex --新一代高速搜索引擎
+                        </a>
+                        <!-- 合作伙伴4 -->
+                        <!-- ========== 可修改项 ==========
+                        修改作用：修改合作伙伴4链接和文字
+                        修改格式：
+                        1. href：替换为合作伙伴官网地址，例如href="https://www.xxx.com"
+                        2. 文字：替换为合作伙伴名称，例如"<i class="fa fa-server mr-2"></i>华为云开发者社区"
+                        -->
+                        <a href="https://98tang.life/vod" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
+                            <i class="fa fa-server mr-2"></i>98堂-色花堂（未满18周岁禁止观看）
+                        </a>
+                        <a href="https://www.madou.la/index.php/vod/show/by/hits/id/1.html" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
+                            <i class="fa fa-link mr-2"></i>麻豆传媒（未满18周岁禁止观看）
+                        </a>
+                        <a href="https://www.douyin.com" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
+                            <i class="fa fa-link mr-2"></i>抖音
+                        </a>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-semibold mb-6">组织资源</h2>
+                <div>
+                    <!-- ========== 可修改项 ==========
+                    修改作用：修改Filebrowser跳转按钮
+                    修改格式：
+                    1. href：替换为你的filebrowser实际访问地址，例如href="http://192.xxx.x.xxx:xxxx"
+                    2. 文字：替换按钮文字，例如"<i class="fa fa-database mr-2"></i>组织资源下载中心"
+                    样式可修改：px-8 py-4（按钮大小）、text-xl（文字大小）
+                    -->
+                    <a href="http://file.daitangxin.dpdns.org" target="_blank" class="px-8 py-4 bg-primary/90 text-white rounded-lg hover-lift inline-block text-xl font-semibold">
+                        <i class="fa fa-database mr-2"></i>缺德组织资源库
+                    </a>
+                
+                <div style="margin: 20px 0;">
+                <h3 class="text-2xl font-semibold mb-6">其它板块</h3>  
+                <div style="margin: 20px 0;">
+    <!-- 蓝色灵动忠诚按钮 -->
+    <a href="./zhongcheng.html" target="_self" 
+       style="
+           display: inline-block;
+           padding: 20px 25px;
+           background: linear-gradient(135deg, #3b82f6, #2563eb); /* 蓝色渐变 */
+           color: white;
+           font-size: 20px;
+           font-weight: 600;
+           border-radius: 12px;
+           text-decoration: none;
+           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* 蓝色阴影 */
+           transition: all 0.3s ease;
+           position: relative;
+       "
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'">
+        <i class="fa fa-video-camera mr-2"></i>将军的恩情
+    </a>
+</div>
+
+    <!-- 蓝色灵动音乐库按钮 -->
+    <a href="./music.html" target="_self" 
+       style="
+           display: inline-block;
+           padding: 20px 25px;
+           background: linear-gradient(135deg, #3b82f6, #2563eb); /* 蓝色渐变 */
+           color: white;
+           font-size: 20px;
+           font-weight: 600;
+           border-radius: 12px;
+           text-decoration: none;
+           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* 蓝色阴影 */
+           transition: all 0.3s ease;
+           position: relative;
+       "
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'">
+        <i class="fa fa-music mr-2"></i>缺德组织音乐库
+    </a>
+</div>
+
+    <!-- 蓝色灵动彩蛋按钮 -->
+    <a href="./egg.html" target="_self" 
+       style="
+           display: inline-block;
+           padding: 20px 25px;
+           background: linear-gradient(135deg, #3b82f6, #2563eb); /* 蓝色渐变 */
+           color: white;
+           font-size: 20px;
+           font-weight: 600;
+           border-radius: 12px;
+           text-decoration: none;
+           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* 蓝色阴影 */
+           transition: all 0.3s ease;
+           position: relative;
+       "
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'">
+        <i class="fa fa mr-2">📸</i>小彩蛋
+    </a>
+</div>
+
+    <div style="display: inline-block;margin: 20px 0;">
+    <button id="toVideosBtn" style="
+        padding: 20px 25px;
+        border: none;
+        border-radius: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-align: left;
+        line-height: 1.4;
+    ">
+        <span style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            margin-right: 12px;
+            font-size: 20px;
+        ">▶</span>
+        视频播放平台
+    </button>
+    <div style="margin: 20px 0;">
+        <h3 class="text-2xl font-semibold mb-6">待开发</h3>
+        <div style="margin: 20px 0;">
+    <a href="./error.html" target="_self" 
+       style="
+           display: inline-block;
+           padding: 20px 25px;
+           background: linear-gradient(135deg, #3b82f6, #2563eb); /* 蓝色渐变 */
+           color: white;
+           font-size: 20px;
+           font-weight: 600;
+           border-radius: 8px;
+           text-decoration: none;
+           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* 蓝色阴影 */
+           transition: all 0.3s ease;
+           position: relative;
+       "
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'">
+        <i class="fa fa-external-link mr-2"></i>正在开发中
+    </a>
+</div>
+
+<!-- 按钮交互脚本 - 放在index.html的</body>标签前 -->
+<script>
+    const videoBtn = document.getElementById('toVideosBtn');
+    // 鼠标悬浮动效
+    videoBtn.addEventListener('mouseenter', () => {
+        videoBtn.style.background = 'linear-gradient(135deg, #1d4ed8, #2563eb)';
+        videoBtn.style.transform = 'translateY(-3px)';
+        videoBtn.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)';
+    });
+    videoBtn.addEventListener('mouseleave', () => {
+        videoBtn.style.background = 'linear-gradient(135deg, #2563eb, #3b82f6)';
+        videoBtn.style.transform = 'translateY(0)';
+        videoBtn.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)';
+    });
+    // 点击跳转
+    videoBtn.addEventListener('click', () => {
+        window.location.href = 'videos.html';
+    });
+</script>
+        </div>
+    </section>
+
+    <footer class="py-6 bg-primary text-white text-center">
+        <!-- ========== 可修改项 ==========
+        修改作用：修改页脚版权信息
+        修改格式：直接替换文字内容，例如"© 2026 缺德组织 版权所有 | 技术支持：开源社区"
+        -->
+        <p>© 2026 缺德组织/缺德影视 版权所有</p>
+        <p>网站由Cloudflare强力驱动</p>
+    </footer>
+
+    <!-- 动效初始化 -->
+    <script>
+        // 页面滚动渐显效果
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('section > div').forEach(el => {
+                el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+                observer.observe(el);
+            });
+
+            // 音乐播放器核心逻辑
+            initMusicPlayer();
+        });
+
+        // 音乐播放器初始化函数
+        function initMusicPlayer() {
+            // 核心元素获取
+            const audio = new Audio();
+            const playBtn = document.getElementById('play-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progressFill = document.getElementById('progress-fill');
+            const currentTimeEl = document.getElementById('current-time');
+            const totalTimeEl = document.getElementById('total-time');
+            const songTitleEl = document.getElementById('song-title');
+            const songArtistEl = document.getElementById('song-artist');
+            const lyricsDisplay = document.getElementById('lyrics-display');
+            const songItems = document.querySelectorAll('.song-item');
+            
+            // 歌曲列表和状态
+            let songs = Array.from(songItems).map(item => ({
+                src: item.dataset.src,
+                title: item.dataset.title,
+                artist: item.dataset.artist,
+                element: item
+            }));
+            let currentSongIndex = -1;
+            let isPlaying = false;
+            let lyrics = [];
+            let currentLyricIndex = 0;
+
+            // 格式化时间（秒转分:秒）
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            // 加载歌曲
+            function loadSong(index) {
+                if (index < 0 || index >= songs.length) return;
+                
+                // 重置状态
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fa fa-play text-2xl"></i>';
+                
+                // 移除之前的选中状态
+                if (currentSongIndex >= 0) {
+                    songs[currentSongIndex].element.classList.remove('bg-white/20');
+                }
+                
+                // 更新当前歌曲
+                currentSongIndex = index;
+                const song = songs[index];
+                audio.src = song.src;
+                songTitleEl.textContent = song.title;
+                songArtistEl.textContent = song.artist;
+                song.element.classList.add('bg-white/20');
+                
+                // 加载歌词
+                loadLyrics(song.title, song.artist);
+                
+                // 预加载音频
+                audio.load();
+                
+                // 音频加载完成后更新总时长
+                audio.addEventListener('loadedmetadata', () => {
+                    totalTimeEl.textContent = formatTime(audio.duration);
+                });
+            }
+
+            // 播放/暂停切换
+            function togglePlay() {
+                if (currentSongIndex === -1) {
+                    // 没有选择歌曲时默认加载第一首
+                    loadSong(0);
+                    return;
+                }
+                
+                if (isPlaying) {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fa fa-play text-2xl"></i>';
+                } else {
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fa fa-pause text-2xl"></i>';
+                }
+                isPlaying = !isPlaying;
+            }
+
+            // 上一曲
+            function prevSong() {
+                const newIndex = currentSongIndex > 0 ? currentSongIndex - 1 : songs.length - 1;
+                loadSong(newIndex);
+                if (isPlaying) {
+                    audio.play();
+                }
+            }
+
+            // 下一曲
+            function nextSong() {
+                const newIndex = currentSongIndex < songs.length - 1 ? currentSongIndex + 1 : 0;
+                loadSong(newIndex);
+                if (isPlaying) {
+                    audio.play();
+                }
+            }
+
+            // 更新进度条
+            function updateProgress() {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = `${progress}%`;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                
+                // 更新歌词
+                if (lyrics.length > 0) {
+                    for (let i = currentLyricIndex; i < lyrics.length; i++) {
+                        if (audio.currentTime >= lyrics[i].time) {
+                            lyricsDisplay.textContent = lyrics[i].text;
+                            lyricsDisplay.classList.remove('lyrics-inactive');
+                            lyricsDisplay.classList.add('lyrics-active');
+                            currentLyricIndex = i;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // 点击进度条跳转播放位置
+            function seekProgress(e) {
+                const width = progressBar.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            // 音频播放结束自动下一曲
+            audio.addEventListener('ended', () => {
+                nextSong();
+            });
+
+            // 实时更新进度
+            audio.addEventListener('timeupdate', updateProgress);
+
+            // 按钮点击事件
+            playBtn.addEventListener('click', togglePlay);
+            prevBtn.addEventListener('click', prevSong);
+            nextBtn.addEventListener('click', nextSong);
+            progressBar.addEventListener('click', seekProgress);
+
+            // 点击歌曲列表项播放歌曲
+            songItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    loadSong(index);
+                    togglePlay();
+                });
+            });
+        }
+    </script>
+
+    <!-- ========== 所有可修改文件清单 ========== -->
+    <!-- 
+    1. logo.png：文件名，对应板块是板块1，代码中作用是展示组织的logo图片
+    2. organization-video1.mp4：文件名，对应板块是板块2，代码中作用是组织宣传视频1的播放源
+    3. video1-cover.jpg：文件名，对应板块是板块2，代码中作用是组织宣传视频1的封面图片
+    4. organization-video2.mp4：文件名，对应板块是板块2，代码中作用是组织宣传视频2的播放源
+    5. video2-cover.jpg：文件名，对应板块是板块2，代码中作用是组织宣传视频2的封面图片
+    6. live-schedule.jpg：文件名，对应板块是直播专区，代码中作用是展示本周直播节目表的图片
+    7. live1-cover.jpg：文件名，对应板块是直播专区，代码中作用是直播1的封面图片
+    8. live2-cover.jpg：文件名，对应板块是直播专区，代码中作用是直播2的封面图片
+    9. live3-cover.jpg：文件名，对应板块是直播专区，代码中作用是直播3的封面图片
+    10. placeholder-intro.jpg：文件名，对应板块是板块3（组织简介），代码中作用是组织简介区域的展示图片
+    11. member1.jpg：文件名，对应板块是板块4（人员介绍），代码中作用是核心成员1的头像图片
+    12. member2.jpg：文件名，对应板块是板块4（人员介绍），代码中作用是核心成员2的头像图片
+    13. member3.jpg：文件名，对应板块是板块4（人员介绍），代码中作用是核心成员3的头像图片
+    14. member4.jpg：文件名，对应板块是板块4（人员介绍），代码中作用是核心成员4的头像图片
+    -->
+</body>
+</html>
