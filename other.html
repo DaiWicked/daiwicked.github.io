@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特殊嘉宾</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .text-section {
+            width: 100%;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .text-section h2 {
+            margin-bottom: 15px;
+            color: #222;
+            font-size: 24px;
+        }
+
+        .text-section p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        /* 第一大板块容器 */
+        .intro-section {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .intro-section:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 左侧竖排信息栏 */
+        .info-col {
+            width: 200px;
+            padding: 30px 0;
+            background: linear-gradient(180deg, #4a6cf7 0%, #2d46b9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+        }
+        .info-item {
+            margin: 20px 0;
+            transform: rotate(0deg);
+            width: 100%;
+        }
+        .info-item h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        .info-item p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 右侧图片区域 */
+        .img-col {
+            flex: 1;
+            height: 500px;
+        }
+        .img-col img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 个人风采板块 */
+        .style-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .style-title {
+            text-align: center;
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+        .style-photos {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .photo-item {
+            flex: 1;
+            min-width: 280px;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 返回按钮样式 */
+        .back-btn-container {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            text-align: center;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 36px;
+            background: linear-gradient(90deg, #4a6cf7, #764ba2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(90deg, #3a5ce7, #663ba2);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .intro-section {
+                flex-direction: column;
+            }
+            .info-col {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 15px 0;
+            }
+            .info-item {
+                margin: 0;
+            }
+            .img-col {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="intro-section">
+        <div class="info-col">
+            <div class="info-item">
+                <h2>姓名</h2>
+                <p>黄智程</p>
+                <p2>就是个鸡吧</p2>
+            </div>
+            <div class="info-item">
+                <h2>联系电话</h2>
+                <p>150****4172</p>
+            </div>
+            <div class="info-item">
+                <h2>使用设备</h2>
+                <p>iQOO Neo10</p>
+            </div>
+            <div class="info-item">
+                <h2>爱好</h2>
+                <p>撸管，养鸡，看片</p>
+            </div>
+            <div class="info-item">
+                <h2>奖项</h2>
+                <p>福建省撸管大赛第一名</p>
+                <p>吉尼斯撸管记录保持者</p>
+            </div>
+        </div>
+        <div class="img-col">
+            <img src="./other.jpg" alt="主图">
+        </div>
+    </section>
+
+    <section class="style-section">
+        <h2 class="style-title">个人风采</h2>
+        <div class="style-photos">
+            <div class="photo-item">
+                <img src="./other1.jpg" alt="照片1">
+            </div>
+            <div class="photo-item">
+                <img src="./other2.jpg" alt="照片2">
+            </div>
+            <div class="photo-item">
+                <img src="./other3.jpg" alt="照片3">
+            </div>
+        </div>
+    </section>
+
+    <section class="style-title">
+        <h2>IQOO</h2>
+        <p>年少有为用爱酷，游戏永远不会输</p>
+    </div>
+    <div class="audio-player">
+        <audio controls autoplay loop>
+            <source src="./iqoo.mp3" type="audio/mpeg">
+            您的浏览器不支持音频播放功能
+        
+    </div>
+
+    <!-- 新增返回首页按钮 -->
+    <div class="back-btn-container">
+        <a href="./index.html" class="back-btn">返回首页</a>
+    </div>
+</body>
+</html>
