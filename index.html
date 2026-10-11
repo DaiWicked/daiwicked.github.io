@@ -112,8 +112,171 @@
             }
         }
     </style>
+
+    <!-- 液态玻璃主题样式 -->
+    <style>
+        /* ========== 全局背景与文字 ========== */
+        .glass-theme {
+            background:
+                radial-gradient(circle at 15% 10%, rgba(79, 172, 254, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(255, 110, 198, 0.12) 0%, transparent 35%),
+                radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                linear-gradient(160deg, #0f1226 0%, #161a35 50%, #1a1f3e 100%);
+            color: rgba(255, 255, 255, 0.92);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-theme .text-dark { color: rgba(255, 255, 255, 0.92) !important; }
+        .glass-theme .text-gray-600 { color: rgba(255, 255, 255, 0.55) !important; }
+        .glass-theme .text-gray-500 { color: rgba(255, 255, 255, 0.45) !important; }
+        .glass-theme .text-primary { color: #64b5f6 !important; }
+        .glass-theme .text-white { color: #fff !important; }
+
+        /* ========== 板块背景透明化 ========== */
+        .glass-theme .bg-primary\/10,
+        .glass-theme .bg-primary\/5,
+        .glass-theme .bg-white,
+        .glass-theme .bg-secondary {
+            background: transparent !important;
+        }
+
+        /* ========== 玻璃卡片 ========== */
+        .glass-theme .bg-white,
+        .glass-theme .bg-secondary {
+            background: rgba(255, 255, 255, 0.06) !important;
+            backdrop-filter: blur(16px) saturate(180%) brightness(1.08);
+            -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(1.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+        }
+        .glass-theme .bg-white:hover,
+        .glass-theme .bg-secondary:hover {
+            background: rgba(255, 255, 255, 0.09) !important;
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                0 8px 30px rgba(0, 0, 0, 0.28),
+                0 16px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ========== 悬停上浮增强 ========== */
+        .glass-theme .hover-lift {
+            transition: transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1),
+                        box-shadow 0.35s cubic-bezier(0.34, 1.3, 0.64, 1),
+                        background 0.3s, border-color 0.3s;
+        }
+        .glass-theme .hover-lift:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 12px 32px rgba(0, 0, 0, 0.3),
+                0 20px 56px rgba(0, 0, 0, 0.18);
+        }
+
+        /* ========== 按钮灵动动效 ========== */
+        .glass-theme a[style*="background-color"],
+        .glass-theme a[style*="background: linear-gradient"] {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.3s ease, filter 0.3s ease;
+        }
+        .glass-theme a[style*="background-color"]:hover,
+        .glass-theme a[style*="background: linear-gradient"]:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 6px 24px rgba(30, 136, 229, 0.4);
+            filter: brightness(1.1);
+        }
+        .glass-theme a[style*="background-color"]:active,
+        .glass-theme a[style*="background: linear-gradient"]:active {
+            transform: scale(0.96);
+            transition: transform 0.12s ease;
+        }
+
+        /* ========== 图片玻璃边框 ========== */
+        .glass-theme img {
+            border-radius: 0.5rem;
+        }
+        .glass-theme .rounded-lg img {
+            border-radius: 0.375rem;
+        }
+
+        /* ========== 成员头像圆形玻璃 ========== */
+        .glass-theme .rounded-full {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* ========== 视频容器 ========== */
+        .glass-theme .video-container video,
+        .glass-theme .video-container iframe {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========== 主要按钮玻璃效果（仅a标签） ========== */
+        .glass-theme a.bg-primary {
+            background: rgba(79, 172, 254, 0.25) !important;
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(79, 172, 254, 0.35);
+            box-shadow:
+                inset 0 1px 0 rgba(190, 227, 255, 0.4),
+                0 4px 16px rgba(79, 172, 254, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+        }
+        .glass-theme a.bg-primary:hover {
+            background: rgba(79, 172, 254, 0.35) !important;
+            border-color: rgba(79, 172, 254, 0.55);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow:
+                inset 0 1px 0 rgba(190, 227, 255, 0.55),
+                0 8px 24px rgba(79, 172, 254, 0.4),
+                0 16px 40px rgba(79, 172, 254, 0.2);
+        }
+        .glass-theme a.bg-primary:active {
+            transform: scale(0.97);
+            transition: transform 0.12s ease;
+        }
+        .glass-theme a.bg-primary\/90 {
+            background: rgba(79, 172, 254, 0.3) !important;
+        }
+
+        /* ========== 音乐播放器 ========== */
+        .glass-theme .music-player {
+            background: rgba(103, 58, 183, 0.25) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            box-shadow:
+                inset 0 1px 0 rgba(200, 170, 255, 0.3),
+                0 8px 30px rgba(103, 58, 183, 0.3);
+        }
+        .glass-theme .bg-white\/20 {
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        /* ========== Footer ========== */
+        .glass-theme footer.bg-primary {
+            background: rgba(15, 18, 38, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* ========== 滚动条 ========== */
+        .glass-theme::-webkit-scrollbar { width: 8px; }
+        .glass-theme::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+        .glass-theme::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+        .glass-theme::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+    </style>
 </head>
-<body class="bg-secondary text-dark font-sans">
+<body class="glass-theme font-sans">
     <!-- 板块1：Logo名称 -->
     <section class="py-20 bg-primary/10">
         <div class="container mx-auto px-6 text-center">
@@ -553,12 +716,6 @@
                         1. href：替换为合作伙伴官网地址，例如href="https://www.xxx.com"
                         2. 文字：替换为合作伙伴名称，例如"<i class="fa fa-server mr-2"></i>华为云开发者社区"
                         -->
-                        <a href="https://98tang.life/vod" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
-                            <i class="fa fa-server mr-2"></i>98堂-色花堂（未满18周岁禁止观看）
-                        </a>
-                        <a href="https://www.madou.la/index.php/vod/show/by/hits/id/1.html" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
-                            <i class="fa fa-link mr-2"></i>麻豆传媒（未满18周岁禁止观看）
-                        </a>
                         <a href="https://www.douyin.com" target="_blank" class="px-6 py-3 bg-primary text-white rounded-lg hover-lift inline-block">
                             <i class="fa fa-link mr-2"></i>抖音
                         </a>
