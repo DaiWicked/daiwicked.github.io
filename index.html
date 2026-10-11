@@ -499,6 +499,47 @@
         </div>
     </section>
 
+    <!-- GayGram 桌面客户端 -->
+    <section id="gaygram" class="py-16 relative z-10">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-center mb-12 fade-in">
+                <span class="section-label">Desktop Client</span>
+                <h2 class="text-3xl font-bold text-white mt-1">GayGram</h2>
+                <p class="text-gray-400 mt-3 max-w-2xl mx-auto">基于 Telegram 桌面客户端的液态玻璃 UI 定制版，深度优化视觉体验与交互细节</p>
+            </div>
+            <div class="glass-card p-8 md:p-10 fade-in">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-shrink-0">
+                        <div class="w-24 h-24 rounded-3xl flex items-center justify-center text-4xl"
+                             style="background: linear-gradient(135deg, #2aabee, #007aff); box-shadow: 0 8px 32px rgba(42, 171, 238, 0.4), inset 0 2px 2px rgba(255,255,255,0.3);">
+                            <i class="fa fa-telegram text-white"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 class="text-2xl font-bold text-white mb-2">GayGram Desktop</h3>
+                        <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+                            液态玻璃材质系统 · 侧栏胶囊按钮 · 标题栏 rim 高光 · 输入区玻璃质感<br>
+                            支持 Windows 平台，持续迭代更新中
+                        </p>
+                        <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+                            <a href="https://github.com/DaiWicked/GayGramDesktop" target="_blank"
+                               class="liquid-btn px-6 py-3 text-base inline-flex items-center">
+                                <i class="fa fa-github mr-2"></i>GitHub 项目
+                            </a>
+                            <a href="./gaygram-prototype.html"
+                               class="px-6 py-3 text-base inline-flex items-center rounded-xl font-semibold text-white no-underline"
+                               style="background: rgba(139, 92, 246, 0.25); border: 1px solid rgba(139, 92, 246, 0.4); backdrop-filter: blur(12px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 16px rgba(139, 92, 246, 0.2); transition: all 0.3s ease;"
+                               onmouseover="this.style.background='rgba(139, 92, 246, 0.4)'; this.style.transform='translateY(-2px)';"
+                               onmouseout="this.style.background='rgba(139, 92, 246, 0.25)'; this.style.transform='translateY(0)';">
+                                <i class="fa fa-eye mr-2"></i>界面预览
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 成员列表 -->
     <section id="members" class="py-16 relative z-10">
         <div class="container mx-auto px-6 max-w-6xl">
@@ -640,10 +681,19 @@
             <!-- 组织资源 -->
             <div class="glass-card p-8 mb-6 fade-in">
                 <h3 class="text-xl font-semibold text-white mb-5">组织资源</h3>
-                <a href="https://github.com/DaiWicked/qdzzshare/releases" target="_blank"
-                   class="liquid-btn px-6 py-3 text-base inline-flex items-center">
-                    <i class="fa fa-database mr-2"></i>组织资源站
-                </a>
+                <div class="flex flex-wrap gap-3">
+                    <a href="https://github.com/DaiWicked/qdzzshare/releases" target="_blank"
+                       class="liquid-btn px-6 py-3 text-base inline-flex items-center">
+                        <i class="fa fa-database mr-2"></i>组织资源站
+                    </a>
+                    <a href="https://github.com/DaiWicked/GayGramDesktop" target="_blank"
+                       class="px-6 py-3 text-base inline-flex items-center rounded-xl font-semibold text-white no-underline"
+                       style="background: rgba(42, 171, 238, 0.2); border: 1px solid rgba(42, 171, 238, 0.4); backdrop-filter: blur(12px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 16px rgba(42, 171, 238, 0.15); transition: all 0.3s ease;"
+                       onmouseover="this.style.background='rgba(42, 171, 238, 0.35)'; this.style.transform='translateY(-2px)';"
+                       onmouseout="this.style.background='rgba(42, 171, 238, 0.2)'; this.style.transform='translateY(0)';">
+                        <i class="fa fa-telegram mr-2"></i>GayGram 项目
+                    </a>
+                </div>
             </div>
 
             <!-- 其它板块 -->
