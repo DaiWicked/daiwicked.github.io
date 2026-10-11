@@ -42,5 +42,8 @@ $RECYCLE.BIN/
 *.old
 临时文件/
 
+# === 演示/草稿文件（不提交到线上） ===
+liquid-glass-demo.html
+
 # === 进度文件（可选：取消注释则不提交进度记录） ===
 # PROGRESS.md
