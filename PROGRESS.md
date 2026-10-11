@@ -73,8 +73,15 @@
 
 ## 待办
 
-- [ ] 用户确认后提交 git（当前修改：egg.html、zhongcheng.html、index.html、新增 PROGRESS.md、.gitignore、jiangjun.mp4）
-- [ ] 5个闲置文件是否清理（live2-cover.jpg、live3-cover.jpg、live4-cover.jpg、music-bg.jpg、logo1.png）— 待用户决定
+- [x] 用户确认后提交 git（commit f7b5409，已推送 origin/main）
+- [x] 5个闲置文件已清理（live2-cover.jpg、live3-cover.jpg、live4-cover.jpg、music-bg.jpg、logo1.png）
+
+## 最终状态（全部完成）
+
+- 提交哈希：`f7b5409`
+- 分支：main → origin/main（已同步）
+- 工作区：干净
+- 11 个文件变更：3 修改 + 3 新增 + 5 删除
 
 ## 关键约束
 
