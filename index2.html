@@ -1,244 +1,342 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>缺德组织 - 作品展示</title>
-    <!-- 可修改title标签内容，改为自定义的子页面标题 -->
     <style>
-        /* 全局样式 - 可修改背景色、字体等 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "微软雅黑", sans-serif;
-        }
-        /* 背景容器 - 核心：自定义背景图片+模糊效果 */
-        .bg-container {
-            position: fixed; /* 背景固定，滚动页面不移动 */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* 放在内容下方 */
-            background-image: url("bg.jpg"); /* 自定义背景图片路径，可修改为你的图片（如images/bg.png） */
-            background-size: cover; /* 背景图片铺满屏幕，可选contain/100% 100%等 */
-            background-position: center; /* 背景图片居中显示 */
-            filter: blur(8px); /* 背景模糊度，数值越大越模糊，可修改 */
-            -webkit-filter: blur(8px); /* 兼容webkit内核浏览器 */
-        }
-        /* 主体内容容器 - 毛玻璃效果核心 */
+        /* ========== 全局基础 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            color: #fff;
-            padding: 20px;
-            margin-top: 30px; /* 无导航栏，增加顶部边距优化视觉 */
-            position: relative; /* 让内容在背景上方 */
-        }
-        /* 页面标题样式 - 可修改字体大小、颜色，加半透明背景增强可读性 */
-        .page-title {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            background: rgba(0, 0, 0, 0.3); /* 半透明背景，增强文字可读性 */
-            padding: 10px 20px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        /* 作品板块容器 - 可修改宽度、间距 */
-        .works-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative; /* 确保在背景上方 */
-        }
-        /* 单个板块样式 - 毛玻璃效果核心，可修改模糊度、背景透明度 */
-        .work-section {
-            width: 45%;
-            /* 毛玻璃样式 */
-            background: rgba(44, 62, 80, 0.6); /* 背景半透明，可修改rgba最后一位调整透明度 */
-            backdrop-filter: blur(10px); /* 板块毛玻璃模糊度，可修改 */
-            -webkit-backdrop-filter: blur(10px); /* 兼容webkit内核 */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1); /* 加细边框增强毛玻璃质感 */
-            position: relative; /* 确保层级 */
-        }
-        /* 板块标题样式 - 可修改字体大小、下划线样式 */
-        .section-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #1E88E5;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        /* 作品展示容器 - 可修改排版方式 */
-        .work-item-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        /* 作品项样式 - 可修改宽度、边框、圆角，也可加毛玻璃效果 */
-        .work-item {
-            width: 30%;
-            border: 2px solid rgba(255, 255, 255, 0.2); /* 半透明白边，适配毛玻璃 */
-            border-radius: 8px;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.2); /* 作品项轻微半透明 */
-        }
-        /* 作品图片样式 - 可修改高度、适配方式 */
-        .work-item img {
-            width: 100%;
-            height: 150px; /* 图片高度，可修改 */
-            object-fit: cover; /* 图片适配方式，可选cover/contain等 */
-            display: block;
-            opacity: 0.9; /* 图片轻微透明，融合毛玻璃风格 */
-        }
-        /* 作品描述样式 - 可修改字体大小、内边距 */
-        .work-desc {
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        /* 返回首页按钮 - 毛玻璃样式，可修改颜色、大小 */
-        .back-home {
-            display: block;
-            width: 120px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            /* 按钮毛玻璃 */
-            background: rgba(44, 62, 80, 0.7);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 40px auto 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative; /* 确保层级 */
-        }
-        .back-home:hover {
-            background: #1E88E5; /* 鼠标悬浮色，可修改 */
+            background-color: #070a13;
+            color: rgba(255, 255, 255, 0.92);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
         }
 
-        /* 响应式适配 - 小屏幕下板块占满宽度，可修改断点和样式 */
-        @media (max-width: 768px) {
-            .work-section {
-                width: 100%;
-            }
-            .work-item {
-                width: 45%;
-            }
-            .bg-container {
-                filter: blur(4px); /* 小屏幕降低背景模糊度，提升性能 */
-                -webkit-filter: blur(4px);
-            }
+        /* ========== 动态极光流体背景 ========== */
+        .liquid-fluid-backdrop {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 0;
+            overflow: hidden;
+            animation: auroraHueCycle 28s infinite ease-in-out alternate;
         }
+        @keyframes auroraHueCycle {
+            0% { filter: hue-rotate(0deg) saturate(100%); }
+            33% { filter: hue-rotate(35deg) saturate(115%); }
+            66% { filter: hue-rotate(-30deg) saturate(110%); }
+            100% { filter: hue-rotate(45deg) saturate(105%); }
+        }
+        .liquid-drop {
+            position: absolute;
+            filter: blur(85px);
+            opacity: 0.38;
+            mix-blend-mode: screen;
+            animation: liquidMorph 18s infinite ease-in-out alternate;
+        }
+        .liquid-drop-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, #0284c7 15%, #0369a1 45%, transparent 70%);
+            top: -10%; left: 2%;
+            animation-duration: 18s;
+        }
+        .liquid-drop-2 {
+            width: 550px; height: 550px;
+            background: radial-gradient(circle, #0d9488 10%, #2563eb 50%, transparent 70%);
+            top: 38%; right: -6%;
+            animation-duration: 24s;
+            animation-delay: -6s;
+        }
+        .liquid-drop-3 {
+            width: 480px; height: 480px;
+            background: radial-gradient(circle, #6366f1 15%, #1d4ed8 50%, transparent 70%);
+            bottom: -5%; left: 22%;
+            animation-duration: 21s;
+            animation-delay: -11s;
+        }
+        @keyframes liquidMorph {
+            0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translate(0,0) scale(1) rotate(0deg); }
+            33% { border-radius: 70% 30% 46% 54% / 30% 60% 40% 70%; transform: translate(45px,-35px) scale(1.1) rotate(60deg); }
+            66% { border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; transform: translate(-30px,45px) scale(0.95) rotate(120deg); }
+            100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translate(20px,-15px) scale(1.05) rotate(180deg); }
+        }
+
+        /* ========== 液态玻璃卡片 ========== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.045);
+            backdrop-filter: blur(28px) saturate(190%) brightness(1.08);
+            -webkit-backdrop-filter: blur(28px) saturate(190%) brightness(1.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 1.25rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.35),
+                inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.25),
+                0 16px 36px -10px rgba(0, 0, 0, 0.55),
+                0 0 24px -4px rgba(56, 189, 248, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 40%, rgba(56,189,248,0.08) 75%, transparent 100%);
+            pointer-events: none; z-index: 1;
+            opacity: 0.65; transition: opacity 0.4s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.008);
+            background: rgba(255, 255, 255, 0.075);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow:
+                inset 0 2px 1.5px 0 rgba(255, 255, 255, 0.55),
+                inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.3),
+                0 24px 48px -12px rgba(0, 0, 0, 0.65),
+                0 0 35px 2px rgba(56, 189, 248, 0.22);
+        }
+        .glass-card:hover::before { opacity: 1; }
+        .glass-card > * { position: relative; z-index: 2; }
+
+        /* ========== 胶囊形悬浮导航栏 ========== */
+        .liquid-navbar {
+            background: rgba(10, 15, 26, 0.28);
+            backdrop-filter: blur(14px) saturate(200%) brightness(1.1);
+            -webkit-backdrop-filter: blur(14px) saturate(200%) brightness(1.1);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 9999px;
+            box-shadow: inset 0 1.5px 1px 0 rgba(255,255,255,0.4), 0 12px 28px -4px rgba(0,0,0,0.35);
+        }
+        .nav-link {
+            color: rgba(209, 213, 219, 0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover { color: #38bdf8; }
+
+        /* ========== 渐变文字 ========== */
+        .text-liquid-shimmer {
+            background: linear-gradient(135deg, #ffffff 15%, #7dd3fc 50%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ========== 英文标签 ========== */
+        .section-label {
+            color: #38bdf8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* ========== 作品项 ========== */
+        .work-item {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .work-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+        .work-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+        .work-desc {
+            padding: 0.625rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ========== 水凝胶按钮 ========== */
+        .liquid-btn {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.8), rgba(2, 132, 199, 0.88));
+            backdrop-filter: blur(16px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 0.75rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: inset 0 1.5px 1px 0 rgba(255,255,255,0.45), 0 8px 24px -4px rgba(2,132,199,0.45);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .liquid-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.95), rgba(2, 132, 199, 0.98));
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: inset 0 2px 2px 0 rgba(255,255,255,0.65), 0 12px 28px -2px rgba(2,132,199,0.65);
+        }
+        .liquid-btn:active { transform: scale(0.97); transition: transform 0.1s; }
+
+        /* ========== 滚动渐显 ========== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ========== 滚动条 ========== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
-    <!-- 背景容器 - 单独的背景层，实现模糊不影响内容 -->
-    <div class="bg-container"></div>
 
-    <!-- 页面标题 - 可修改文字内容 -->
-    <h1 class="page-title">缺德组织 · 作品展示</h1>
-
-    <!-- 作品板块容器 -->
-    <div class="works-container">
-        <!-- 摄影样片板块 - 可修改板块标题、作品内容 -->
-        <div class="work-section">
-            <h2 class="section-title">摄影样片</h2>
-            <div class="work-item-list">
-                <!-- 摄影作品1 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo1.jpg" alt="摄影样片1">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By WickedDai</p>
-                </div>
-                <!-- 摄影作品2 - 可复制此段代码添加更多作品 -->
-                <div class="work-item">
-                    <img src="photo2.jpg" alt="摄影样片2">
-                    <p class="work-desc">By WickedDai</p>
-                </div>
-                <!-- 摄影作品3 -->
-                <div class="work-item">
-                    <img src="photo3.jpg" alt="摄影样片3">
-                    <p class="work-desc">By WickedDai</p>
-                </div>
-                 <!-- 摄影作品4 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo4.jpg" alt="摄影样片4">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By Mr.Lin</p>
-                </div>
-                 <!-- 摄影作品5 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo5.jpg" alt="摄影样片5">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By Mr.Lin</p>
-                </div>
-                 <!-- 摄影作品6 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo6.jpg" alt="摄影样片6">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By Mr.Lin</p>
-                </div>
-                <!-- 摄影作品7 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo7.jpg" alt="摄影样片7">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By JacksonHuang</p>
-                </div>
-                <!-- 摄影作品8 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo8.jpg" alt="摄影样片8">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By JacksonHuang</p>
-                </div>
-                <!-- 摄影作品9 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="photo9.jpg" alt="摄影样片9">
-                    <!-- 注意：需将图片文件放在网站根目录，或修改src为实际图片路径（如images/photo1.jpg） -->
-                    <p class="work-desc">By JacksonHuang</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 原创漫画板块 - 可修改板块标题、作品内容 -->
-        <div class="work-section">
-            <h2 class="section-title">原创漫画</h2>
-            <div class="work-item-list">
-                <!-- 漫画作品1 - 可替换图片src、修改描述文字 -->
-                <div class="work-item">
-                    <img src="comic1.jpg" alt="原创漫画1">
-                    <p class="work-desc">流浪壮根1（2023.11）</p>
-                </div>
-                <!-- 漫画作品2 - 可复制此段代码添加更多作品 -->
-                <div class="work-item">
-                    <img src="comic2.jpg" alt="原创漫画2">
-                    <p class="work-desc">流浪壮根（2023.11）</p>
-                </div>
-                <!-- 漫画作品3 -->
-                <div class="work-item">
-                    <img src="comic3.jpg" alt="原创漫画3">
-                    <p class="work-desc">流浪壮根3（未完待续）</p>
-                </div>
-            </div>
-        </div>
+    <!-- 动态极光流体背景 -->
+    <div class="liquid-fluid-backdrop" aria-hidden="true">
+        <div class="liquid-drop liquid-drop-1"></div>
+        <div class="liquid-drop liquid-drop-2"></div>
+        <div class="liquid-drop liquid-drop-3"></div>
     </div>
 
-    <!-- 返回首页按钮 - 替代导航栏的返回入口，可修改文字和样式 -->
-    <a href="./index.html" class="back-home">返回首页</a>
+    <!-- 顶部胶囊形悬浮导航栏 -->
+    <header class="fixed top-5 inset-x-0 z-50 flex justify-center px-4">
+        <nav class="liquid-navbar px-6 py-2.5 flex items-center gap-6 max-w-4xl w-full justify-between">
+            <a href="./index.html" class="flex items-center gap-2.5 no-underline">
+                <img src="./logo.png" alt="缺德组织Logo" class="w-7 h-auto">
+                <span class="font-bold text-base tracking-wide text-white">缺德组织</span>
+            </a>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="./index.html" class="nav-link">首页</a>
+                <a href="#photo" class="nav-link">摄影</a>
+                <a href="#comic" class="nav-link">漫画</a>
+            </div>
+            <a href="./index.html" class="px-4 py-1.5 rounded-full text-xs font-semibold text-white no-underline"
+               style="background: rgba(2,132,199,0.8); box-shadow: 0 4px 12px rgba(2,132,199,0.3);">
+                <i class="fa fa-home mr-1"></i>返回首页
+            </a>
+        </nav>
+    </header>
+
+    <!-- Hero 标题区 -->
+    <section class="pt-36 pb-12 relative z-10">
+        <div class="container mx-auto px-6 max-w-4xl text-center fade-in">
+            <span class="section-label">Portfolio</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-2 mb-3">
+                <span class="text-liquid-shimmer">缺德组织 · 作品展示</span>
+            </h1>
+            <p class="text-gray-400 text-sm md:text-base font-light">摄影样片 · 原创漫画</p>
+        </div>
+    </section>
+
+    <!-- 摄影样片 -->
+    <section id="photo" class="py-12 relative z-10">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="mb-8 fade-in">
+                <span class="section-label">Photography</span>
+                <h2 class="text-2xl font-bold text-white mt-1">摄影样片</h2>
+            </div>
+            <div class="glass-card p-6 fade-in">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+                    <div class="work-item">
+                        <img src="photo1.jpg" alt="摄影样片1">
+                        <p class="work-desc">By WickedDai</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo2.jpg" alt="摄影样片2">
+                        <p class="work-desc">By WickedDai</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo3.jpg" alt="摄影样片3">
+                        <p class="work-desc">By WickedDai</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo4.jpg" alt="摄影样片4">
+                        <p class="work-desc">By Mr.Lin</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo5.jpg" alt="摄影样片5">
+                        <p class="work-desc">By Mr.Lin</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo6.jpg" alt="摄影样片6">
+                        <p class="work-desc">By Mr.Lin</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo7.jpg" alt="摄影样片7">
+                        <p class="work-desc">By JacksonHuang</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo8.jpg" alt="摄影样片8">
+                        <p class="work-desc">By JacksonHuang</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="photo9.jpg" alt="摄影样片9">
+                        <p class="work-desc">By JacksonHuang</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 原创漫画 -->
+    <section id="comic" class="py-12 relative z-10">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="mb-8 fade-in">
+                <span class="section-label">Comics</span>
+                <h2 class="text-2xl font-bold text-white mt-1">原创漫画</h2>
+            </div>
+            <div class="glass-card p-6 fade-in">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl">
+                    <div class="work-item">
+                        <img src="comic1.jpg" alt="原创漫画1">
+                        <p class="work-desc">流浪壮根1（2023.11）</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="comic2.jpg" alt="原创漫画2">
+                        <p class="work-desc">流浪壮根（2023.11）</p>
+                    </div>
+                    <div class="work-item">
+                        <img src="comic3.jpg" alt="原创漫画3">
+                        <p class="work-desc">流浪壮根3（未完待续）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 返回首页 -->
+    <section class="py-16 relative z-10">
+        <div class="container mx-auto px-6 text-center fade-in">
+            <a href="./index.html" class="liquid-btn px-8 py-3.5 text-base">
+                <i class="fa fa-home"></i>返回首页
+            </a>
+        </div>
+    </section>
+
+    <!-- 滚动渐显 JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+    </script>
+
 </body>
 </html>
