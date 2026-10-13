@@ -1,7 +1,7 @@
 # 项目进度记录
 
-> 最后更新：2026-10-12
-> 状态：进行中 — 软件项目 HTML 原型制作（已完成3个）
+> 最后更新：2026-10-13
+> 状态：进行中 — 全站液态玻璃动效优化（v2 demo验证后应用）
 
 ---
 
@@ -100,6 +100,25 @@
 - GayGram 专门板块：GitHub项目 + 界面预览 两个按钮
 - 组织资源：GayGram 入口
 - 其它板块：ChatRoom 2.0 + 学习不通2.0 入口按钮
+
+### 第五阶段：v2 demo 动效优化 ✅
+1. ✅ 在旧版 liquid-glass-demo.html 基础上优化，输出 liquid-glass-v2-demo.html
+2. ✅ 按钮 Meniscus 按压下陷（scale 0.96 + 中心内阴影 + 边缘亮环）
+3. ✅ 按钮光标跟随高光（::after 径向渐变跟随鼠标）
+4. ✅ 开关 Hold 拉长 1.4x（点击后先拉长120ms再4阶段翻转）
+5. ✅ focus-visible 键盘焦点环（2px实环+5px扩散+16px辉光）
+6. ✅ 跨终端适配（桌面Hover/移动触控）
+7. ✅ 移除 prefers-reduced-transparency 降级（会导致全局全黑）
+8. ✅ 用户确认效果满意，可应用到全站
+
+### 第六阶段：全站动效优化 ✅
+1. ✅ index.html：.liquid-btn 主按钮 + .glass-btn-secondary 次要按钮优化
+2. ✅ index2.html：.liquid-btn 优化
+3. ✅ egg.html：.liquid-btn 优化
+4. ✅ zhongcheng.html：.liquid-btn 优化
+5. ✅ other.html：.liquid-btn 优化（胶囊形按钮）
+6. ✅ 所有页面添加 focus-visible 焦点环 + 按钮光标跟随 JS
+7. ✅ 错误页面（403/404/500/error）无按钮，跳过
 
 ## 关键约束
 
